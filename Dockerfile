@@ -16,8 +16,8 @@ COPY . .
 # 预先下载依赖并编译项目
 RUN cargo build --release --verbose
 
-# 使用一个更小的基础镜像来部署最终的二进制文件
-FROM debian:buster-slim
+# 使用一个更小的基础镜像来部署最终的二进制文件，基于 bullseye-slim 版本
+FROM debian:bullseye-slim
 
 # 设置工作目录
 WORKDIR /usr/src/majsoulmax

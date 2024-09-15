@@ -1,5 +1,5 @@
 # 使用官方 Rust 镜像作为基础镜像进行构建
-FROM rust:latest
+FROM rust:latest as builder
 
 # 设置工作目录
 WORKDIR /usr/src/majsoulmax

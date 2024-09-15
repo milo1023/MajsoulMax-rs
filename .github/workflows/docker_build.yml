@@ -5,7 +5,7 @@ on:
     branches:
       - main
     tags:
-      - "v*.*.*"  # 版本标签触发
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -25,12 +25,21 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Extract Docker image tag
+        id: extract_tag
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "IMAGE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          else
+            echo "IMAGE_TAG=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          fi
+      
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .    # 项目根目录
-          file: ./Dockerfile   # Dockerfile 路径
+          context: .
+          file: ./Dockerfile
           push: true
           tags: |
-            milo1023/majsoulmax-rs:latest   # latest 标签
-            milo1023/majsoulmax-rs:${{ github.ref_name }}  # 版本标签
+            milo1023/majsoulmax-rs:latest
+            milo1023/majsoulmax-rs:${{ env.IMAGE_TAG }}

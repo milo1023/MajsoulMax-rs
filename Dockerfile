@@ -14,6 +14,7 @@ COPY Cargo.toml Cargo.lock ./
 COPY . .
 
 # 将配置文件复制到容器
+RUN mkdir /usr/src/majsoulmax/liqi_config
 COPY /proto/* /usr/src/majsoulmax/liqi_config/
 COPY /liqi_config/* /usr/src/majsoulmax/liqi_config/
 

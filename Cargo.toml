@@ -8,7 +8,7 @@ rust-version = "1.80"
 path = "src/lib.rs"
 [[bin]]
 name = "majsoul_max_rs"
-
+path = "src/main.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

@@ -13,11 +13,6 @@ COPY Cargo.toml Cargo.lock ./
 # 将项目所有文件复制到容器中
 COPY . .
 
-# 将配置文件复制到容器
-RUN mkdir /usr/src/majsoulmax/liqi_config
-COPY /proto/* /usr/src/majsoulmax/liqi_config/
-COPY /liqi_config/* /usr/src/majsoulmax/liqi_config/
-
 # 预先下载依赖并编译项目
 RUN cargo build --release --verbose
 
@@ -32,6 +27,13 @@ RUN apt-get update && apt-get install -y libprotobuf-dev
 
 # 将构建阶段生成的二进制文件复制到最终镜像中
 COPY --from=builder /usr/src/majsoulmax/target/release/majsoul_max_rs .
+
+# 确保目标目录存在
+RUN mkdir -p /usr/src/majsoulmax/liqi_config
+
+# 将配置文件和其他必要文件复制到容器中
+COPY proto/* /usr/src/majsoulmax/liqi_config/
+COPY liqi_config/* /usr/src/majsoulmax/liqi_config/
 
 # 设置环境变量
 ENV ROCKET_ADDRESS=0.0.0.0

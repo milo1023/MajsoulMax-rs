@@ -8,8 +8,6 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     curl
 
-# 设置工作目录
-WORKDIR /usr/src/majsoulmax
 
 # 将项目的 Cargo.toml 和 Cargo.lock 复制到容器中
 COPY Cargo.toml Cargo.lock ./
@@ -27,10 +25,10 @@ RUN cargo build --release --verbose
 FROM debian:buster-slim
 
 # 设置工作目录
-WORKDIR /usr/src/majsoulmax
+WORKDIR /
 
 # 将构建阶段生成的二进制文件复制到最终镜像中
-COPY --from=builder /usr/src/majsoulmax/target/release/majsoul_max_rs .
+COPY --from=builder /target/release/majsoul_max_rs .
 
 # 设置环境变量，避免 Docker 容器生成过多缓存
 ENV ROCKET_ADDRESS=0.0.0.0
